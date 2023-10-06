@@ -15,19 +15,33 @@
 import sys
 
 
-###Comands###
+###Comands### 
 #Opening files
-fasta_file=open("malaria.fna", "r")
-blast_file=open("malaria.blastx.tab", "r")
+fasta_file=open("five_seq.fna", "r")
+blast_file=open("five_seq.blastx.tab", "r")
 new_fasta_file=open("output.txt","w")
 
-#reading files
-line1=fasta_file.readline()
-print(line1)
-print(line1.split())
-for line in fasta_file:
-    print(line)
+
     
+# =============================================================================
+# #Check if the sequences have the right characters ALGO ESTÁ MAL CON ESTO. MIRAR MAS EXCEPCIONES 
+# valid_nucleotides=["A","T","C","G"] #This are the only nucleotides accepted
+# fasta_check=[] #open a new variable to check fasta file sequences
+# for line in fasta_file:
+#     if line[0] != ">":
+#         print(line)
+#         seq_check=line
+#         fasta_check.append(seq_check)
+# print(fasta_check)
+# for nucleotide in str(fasta_check).upper(): #for each position in the sequence provided, check if it is in the valid values provided and then decide if theres an exception or not
+#     if nucleotide not in valid_nucleotides: #If the letters in the 
+#         raise Exception("Not valid nucleotides provided")
+# else:
+#     print("The file you uploaded contains DNA sequences")
+# =============================================================================
+
+
+
 
 #For each line in fasta_file search for lines begining with ">" and extract all
 #information until another the next ">" appears and store the result in vasiable
