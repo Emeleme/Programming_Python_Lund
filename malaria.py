@@ -93,10 +93,10 @@ new_fasta_file=open("output.txt","w")
 #Mamasita, el trabajo que se te viene limpiando este codigo es monumental. Buena suerte belleza
 #Y por si alguien se pregunta, si, hablo conmigomisma en tercera persona cuando escribo códigos. Me da moral cuando me siento frustrada, como ahora :)
 #Y por si alguien llega a ver esto en el futuro, si, estoy siendo lenta e ineficiente pero que le hacemos, asi funciona mi mente :D bai por ahora
-# =============================================================================
-# #Store queryname and hit description as a dictionary only when hit description is != null
-# #uses pandas
-# 
+#Ahora si tenemos diccionario, no habia puesto el index pa'sortearlo, jejeje
+#=============================================================================
+#Store queryname and hit description as a dictionary only when hit description is != null
+#uses pandas
 # #read the blast file as a csv delimited by tabs and counting first row as column names
 # blast_csv=pd.read_csv(blast_file, sep='\t', lineterminator='\n', header=(0))
 # #make the csv a dataframe to work with
@@ -105,11 +105,27 @@ new_fasta_file=open("output.txt","w")
 # blast_df_cols=blast_df[['#queryName', 'hitDescription']]
 # #extract the rows that have all values (not include rows with null values)
 # blast_df_cols=blast_df_cols.dropna()
+# #Seting the index from which values must be sorted in the dictionary
+# blast_df_cols=blast_df_cols.set_index("#queryName")
+# #Change column name 
+# blast_df_cols.rename(columns = {'hitDescription':'protein'}, inplace = True)
 # #make the new dataframe a dictionary
-# blast_dic=blast_df_cols.to_dict(orient="split")
+# blast_dic=blast_df_cols.to_dict("index")
+# blast_dic["2_g"]
 # =============================================================================
 
 
+
+
+
+
+
+for lines in textfile.xreadlines():
+    for eachkey in dict.keys():
+        if eachkey in lines:
+            print lines + " : " + dict[eachkey]
+        else:
+            continue
 
 
 
