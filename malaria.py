@@ -15,12 +15,14 @@
 import sys
 import pandas as pd
 
-
-###Comands### 
-#Opening files
-fasta_file=open("five_seq.fna", "r")
-blast_file=open("five_seq.blastx.tab", "r")
-new_fasta_file=open("output.txt","w")
+# =============================================================================
+# 
+# ###Comands### 
+# #Opening files
+# fasta_file=open("five_seq.fna", "r")
+# blast_file=open("five_seq.blastx.tab", "r")
+# new_fasta_file=open("output.txt","w")
+# =============================================================================
 
 
     
@@ -94,43 +96,47 @@ new_fasta_file=open("output.txt","w")
 #Y por si alguien se pregunta, si, hablo conmigomisma en tercera persona cuando escribo códigos. Me da moral cuando me siento frustrada, como ahora :)
 #Y por si alguien llega a ver esto en el futuro, si, estoy siendo lenta e ineficiente pero que le hacemos, asi funciona mi mente :D bai por ahora
 #Ahora si tenemos diccionario, no habia puesto el index pa'sortearlo, jejeje
-#=============================================================================
-#Store queryname and hit description as a dictionary only when hit description is != null
-#uses pandas
-# #read the blast file as a csv delimited by tabs and counting first row as column names
-# blast_csv=pd.read_csv(blast_file, sep='\t', lineterminator='\n', header=(0))
-# #make the csv a dataframe to work with
-# blast_df=pd.DataFrame(blast_csv)
-# #extract ONLY the query name and the hit descriptions 
-# blast_df_cols=blast_df[['#queryName', 'hitDescription']]
-# #extract the rows that have all values (not include rows with null values)
-# blast_df_cols=blast_df_cols.dropna()
-# #Seting the index from which values must be sorted in the dictionary
-# blast_df_cols=blast_df_cols.set_index("#queryName")
-# #Change column name 
-# blast_df_cols.rename(columns = {'hitDescription':'protein'}, inplace = True)
-# #make the new dataframe a dictionary
-# blast_dic=blast_df_cols.to_dict("index")
-# blast_dic["2_g"]
 # =============================================================================
 
+#Open blast file to turn into a dictionary
+blast_file=open("five_seq.blastx.tab", "r")
+#Store queryname and hit description as a dictionary only when hit description is != null
+#uses pandas
+#read the blast file as a csv delimited by tabs and counting first row as column names
+blast_csv=pd.read_csv(blast_file, sep='\t', lineterminator='\n', header=(0))
+#make the csv a dataframe to work with
+blast_df=pd.DataFrame(blast_csv)
+#extract ONLY the query name and the hit descriptions 
+blast_df_cols=blast_df[['#queryName', 'hitDescription']]
+#extract the rows that have all values (not include rows with null values)
+blast_df_cols=blast_df_cols.dropna()
+#Seting the index from which values must be sorted in the dictionary
+blast_df_cols=blast_df_cols.set_index("#queryName")
+#Change column name 
+blast_df_cols.rename(columns = {'hitDescription':'protein'}, inplace = True)
+#make the new dataframe a dictionary
+blast_dic=blast_df_cols.to_dict("index")
+blast_dic["2_g"]
 
+#open a new fasta to store results
+new_fasta_file = open ("output.txt", "w")
 
-
-
-
-
-for lines in textfile.xreadlines():
-    for eachkey in dict.keys():
-        if eachkey in lines:
-            print lines + " : " + dict[eachkey]
-        else:
-            continue
-
-
-
-
-
+#THERE'S A PROBLEM WITH THIS CODE, I JOIN THE DICTIONARY BUT JUST ADDS THE WORD PROTEIN, I HAVE TO DELETE IT SOMEHOW
+#Vamo'a intentar quitar los nombres de las columnas en el dataframe si mujer? solo a ver que pasa. Termina de comentar, le subimos a Github y seguimos 
+#make a variable to store temporary results
+new_line=None
+#open the original fasta file
+with open ("five_seq.fna", "r") as fasta_file:
+    for line in fasta_file: #for each line in the fasta file
+        if line.startswith (">"):
+            header = line[1:] #save the header withput the > chr
+            header = header.split() #save it with the tabs
+            if header[0] in blast_dic: #if the first position (ID) appears in the blast dictionary
+                new_line = line.strip() + "\t" + "".join(blast_dic[header[0]]) #store in the new line the line from the fasta file (without removing any chr, that's strip() for) and the value from the dictionary
+                new_fasta_file.write (new_line + "\n") #writes this line in the output file
+        elif new_line is not None: #To add the next line in the output file, check if there was something in the new_line variable
+            new_fasta_file.write(line) #print the line of the iteration (it does not start with ">")
+            new_line=None #set new_line variable to zero
 
 
 
