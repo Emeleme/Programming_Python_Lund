@@ -13,6 +13,7 @@
 
 ###Libraries### 
 import sys
+import pandas as pd
 
 
 ###Comands### 
@@ -43,23 +44,70 @@ new_fasta_file=open("output.txt","w")
 
 
 
-#For each line in fasta_file search for lines begining with ">" and extract all
-#information until another the next ">" appears and store the result in vasiable
-#named id_seq 
+# =============================================================================
+#LETS BACK TO THIS LATER
+# #For each line in fasta_file search for lines begining with ">" and extract all
+# #information until another the next ">" appears and store the result in vasiable
+# #named id_seq 
+# 
+# seq_fas=[] #open a variable to store temporarly all the fasta sequences
+# new_fasta=[] #open a new variable to store all the modified sequences in fasta format
+# 
+# for line in fasta_file:
+#     if not line.startswith(">"):
+#         seq_fas.append(line)
+#         if seq_fas:
+#             new_fasta.append(seq_fas); #Keep the previous sequence in new_fasta
+#         seq_fas='' #erases the content in seq_fas
+#     else:
+#         seq_fas.append(line)
+# print(new_fasta)
+# 
+# 
+# #An alternative shorter way to reading FASTA files
+# r = open('Fasta_example_3_seq.txt', 'r')
+# seq = [] #Holds the final combined sequences
+# temp=''
+# 
+# for line in r:
+#     if line.startswith('>'):
+#         #Found start of a sequence
+#         if temp:
+#             seq.append(temp); #Keep the previous sequence in seq
+#         temp='' #zero temp
+#     else:
+#         #Found more of existing sequence
+#         temp += line.rstrip() #remove new line character
+# 
+# if temp:
+#     #if the file is not empty
+#     seq.append(temp)
+# 
+# r.close()
+# 
+# print("Printing the concatenated file:")
+# print(seq)
+# =============================================================================
 
-seq_fas=[] #open a variable to store temporarly all the fasta sequences
-new_fasta=[] #open a new variable to store all the modified sequences in fasta format
-
-for line in fasta_file:
-    if line.startswith(">"):
-        if seq_fasta:
-            seq.append(temp); #Keep the previous sequence in seq
-        temp=''
-
-
-
-
-
+#MARIA LAURA TENEMOS U DICCIONARIO PARA TRABAJAR DESPUÉS!!
+#Mamasita, el trabajo que se te viene limpiando este codigo es monumental. Buena suerte belleza
+#Y por si alguien se pregunta, si, hablo conmigomisma en tercera persona cuando escribo códigos. Me da moral cuando me siento frustrada, como ahora :)
+#Y por si alguien llega a ver esto en el futuro, si, estoy siendo lenta e ineficiente pero que le hacemos, asi funciona mi mente :D bai por ahora
+# =============================================================================
+# #Store queryname and hit description as a dictionary only when hit description is != null
+# #uses pandas
+# 
+# #read the blast file as a csv delimited by tabs and counting first row as column names
+# blast_csv=pd.read_csv(blast_file, sep='\t', lineterminator='\n', header=(0))
+# #make the csv a dataframe to work with
+# blast_df=pd.DataFrame(blast_csv)
+# #extract ONLY the query name and the hit descriptions 
+# blast_df_cols=blast_df[['#queryName', 'hitDescription']]
+# #extract the rows that have all values (not include rows with null values)
+# blast_df_cols=blast_df_cols.dropna()
+# #make the new dataframe a dictionary
+# blast_dic=blast_df_cols.to_dict(orient="split")
+# =============================================================================
 
 
 
