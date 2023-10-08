@@ -15,16 +15,11 @@
 import sys
 import pandas as pd
 
-# =============================================================================
-# 
-# ###Comands### 
-# #Opening files
-# fasta_file=open("five_seq.fna", "r")
-# blast_file=open("five_seq.blastx.tab", "r")
-# new_fasta_file=open("output.txt","w")
-# =============================================================================
+print("Running script to add the BLAST hit description to the fasta sequence header: ", sys.argv[0])
 
-
+fasta_file=sys.argv[1]
+blast_file=sys.argv[2]
+output_file=sys.argv[3]
     
 # =============================================================================
 # #Check if the sequences have the right characters ALGO ESTÁ MAL CON ESTO. MIRAR MAS EXCEPCIONES 
@@ -46,56 +41,12 @@ import pandas as pd
 
 
 
-# =============================================================================
-#LETS BACK TO THIS LATER
-# #For each line in fasta_file search for lines begining with ">" and extract all
-# #information until another the next ">" appears and store the result in vasiable
-# #named id_seq 
-# 
-# seq_fas=[] #open a variable to store temporarly all the fasta sequences
-# new_fasta=[] #open a new variable to store all the modified sequences in fasta format
-# 
-# for line in fasta_file:
-#     if not line.startswith(">"):
-#         seq_fas.append(line)
-#         if seq_fas:
-#             new_fasta.append(seq_fas); #Keep the previous sequence in new_fasta
-#         seq_fas='' #erases the content in seq_fas
-#     else:
-#         seq_fas.append(line)
-# print(new_fasta)
-# 
-# 
-# #An alternative shorter way to reading FASTA files
-# r = open('Fasta_example_3_seq.txt', 'r')
-# seq = [] #Holds the final combined sequences
-# temp=''
-# 
-# for line in r:
-#     if line.startswith('>'):
-#         #Found start of a sequence
-#         if temp:
-#             seq.append(temp); #Keep the previous sequence in seq
-#         temp='' #zero temp
-#     else:
-#         #Found more of existing sequence
-#         temp += line.rstrip() #remove new line character
-# 
-# if temp:
-#     #if the file is not empty
-#     seq.append(temp)
-# 
-# r.close()
-# 
-# print("Printing the concatenated file:")
-# print(seq)
-# =============================================================================
+
 
 #MARIA LAURA TENEMOS U DICCIONARIO PARA TRABAJAR DESPUÉS!!
 #Mamasita, el trabajo que se te viene limpiando este codigo es monumental. Buena suerte belleza
 #Y por si alguien se pregunta, si, hablo conmigomisma en tercera persona cuando escribo códigos. Me da moral cuando me siento frustrada, como ahora :)
 #Y por si alguien llega a ver esto en el futuro, si, estoy siendo lenta e ineficiente pero que le hacemos, asi funciona mi mente :D bai por ahora
-#Ahora si tenemos diccionario, no habia puesto el index pa'sortearlo, jejeje
 # =============================================================================
 
 #Open blast file to turn into a dictionary
