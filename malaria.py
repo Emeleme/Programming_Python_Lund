@@ -110,12 +110,8 @@ blast_df=pd.DataFrame(blast_csv)
 blast_df_cols=blast_df[['#queryName', 'hitDescription']]
 #extract the rows that have all values (not include rows with null values)
 blast_df_cols=blast_df_cols.dropna()
-#Seting the index from which values must be sorted in the dictionary
-blast_df_cols=blast_df_cols.set_index("#queryName")
-#Change column name 
-blast_df_cols.rename(columns = {'hitDescription':'protein'}, inplace = True)
-#make the new dataframe a dictionary
-blast_dic=blast_df_cols.to_dict("index")
+#Make a dictionary that sets the queryname as key () and the hit description as values []
+blast_dic=blast_df_cols.set_index("#queryName")["hitDescription"].to_dict()
 blast_dic["2_g"]
 
 #open a new fasta to store results
@@ -137,8 +133,6 @@ with open ("five_seq.fna", "r") as fasta_file:
         elif new_line is not None: #To add the next line in the output file, check if there was something in the new_line variable
             new_fasta_file.write(line) #print the line of the iteration (it does not start with ">")
             new_line=None #set new_line variable to zero
-
-
 
 #Closing all files
 fasta_file.close()
