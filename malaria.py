@@ -14,20 +14,22 @@
 ###Libraries### 
 import os
 
-packages=["sys", "pandas"]
+packages=["sys", "pandas", "os"] #Make a list of the modules needed for this script to run
 
-for i in packages:
+for i in packages: #Install the modules if they are not installed in the computer of the person running the code
     try:
         __import__(i)
     except:
         os.system("pip install "+i)
 
+import os
 import sys
 import pandas as pd
 
 
 print("Running script to add the BLAST hit description to the fasta sequence header: ", sys.argv[0])
 
+#File input from the user
 fasta_user=sys.argv[1]
 print("The fasta file that you provided is: ", sys.argv[1])
 blast_user=sys.argv[2]
@@ -38,24 +40,39 @@ print("The output of this process is going to be in the file named: ", sys.argv[
 print("Checking input files: ...")
 
 
-# =============================================================================
-# #Check if the sequences have the right characters ALGO ESTÁ MAL CON ESTO. MIRAR MAS EXCEPCIONES 
-# valid_nucleotides=["A","T","C","G"] #This are the only nucleotides accepted
-# fasta_check=[] #open a new variable to check fasta file sequences
-# for line in fasta_file:
-#     if line[0] != ">":
-#         print(line)
-#         seq_check=line
-#         fasta_check.append(seq_check)
-# print(fasta_check)
-# for nucleotide in str(fasta_check).upper(): #for each position in the sequence provided, check if it is in the valid values provided and then decide if theres an exception or not
-#     if nucleotide not in valid_nucleotides: #If the letters in the 
-#         raise Exception("Not valid nucleotides provided")
-# else:
-#     print("The file you uploaded contains DNA sequences")
-# =============================================================================
+
+###Basic control check###
+#for fasta file
+
+if not os.path.exists(fasta_user): #Does the file exist?
+    print("The fasta file you uploaded does not exist. Please provide an existing file.")
+    sys.exit(1) #if not then exit
+elif not os.path.getsize(fasta_user)>0: #Does the file contain values?
+    print("The fasta file you uploades does not contain any sequence. Please provide a sequence")
+    sys.exit(1) #if not then exit
+
+with open (fasta_user, "r") as fasta_file:
+    first_line_fasta=fasta_file.readline() #Does the first line of the fasta file starts with something different of ">"
+    if not first_line_fasta.startswith (">"):
+        raise TypeError("It seems you uploaded a non supported type of file, maybe a Fastq? Please check and provide a fasta format file")
+        sys.exit(1) #if yes then exit
+    else:
+        print("Fasta file seems to be correct")
+
+
+#For BLAST file
+if not os.path.exists(blast_user): #Does the file exist?
+    print("The BLAST file you uploaded does not exist. Please provide an existing file.")
+    sys.exit(1) #if not then exit
+elif not os.path.getsize(blast_user)>0:  #Does the file contain values?
+    print("The BLAST file you uploaded does not contain any sequence. Please provide a sequence")
+    sys.exit(1) #if not then exit
+else:
+    print("BLAST file seems to be correct")
 
 print("Checking finished.","\n","Running...")
+
+
 
 ###Comands###
 
@@ -77,11 +94,12 @@ blast_dic=blast_df_cols.set_index("#queryName")["hitDescription"].to_dict()
 #blast_dic["2_g"]
 #len(blast_dic)
 
-if len(blast_dic)!=0:
+if len(blast_dic)!=0: #Check how many sequences have are left after extracting the 'null' values
     print(sys.argv[2], "has", len(blast_dic), "sequences with hitDescription different from 'null'")
 else:
     print(sys.argv[2], "has no sequences with hitDescription different from 'null'")
     exit()
+
 
 #open a new fasta to store results
 new_fasta_file = open (output_file, "w")
